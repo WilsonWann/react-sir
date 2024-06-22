@@ -15,6 +15,7 @@ export const getTodos = async () => {
 
 export const addTodo = async ({ userId, title, completed }) => {
   await delay()
+  if (Math.random() < 0.5) throw new Error('Failed to add new item!')
   const response = await todosApi.post(todosUrlEndpoint, {
     userId,
     title,
