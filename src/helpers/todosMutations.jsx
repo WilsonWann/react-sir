@@ -42,3 +42,23 @@ export const updateTodoOptions = (updatedTodo, todos) => {
     revalidate: false
   }
 }
+
+export const deleteMutation = async ({ id }, todos) => {
+  const deleted = await deleteTodo({ id })
+  return todos
+    .filter((todo) => todo.id !== deleted.id)
+    .sort((a, b) => b.userId - a.userId)
+}
+
+export const deleteTodoOptions = ({ id }, todos) => {
+  return {
+    optimisticData: todos
+      .filter((todo) => todo.id !== id)
+      .sort((a, b) => b.userId - a.userId),
+    rollbackOnError: true,
+    populateCache: true,
+    revalidate: false
+  }
+}
+
+

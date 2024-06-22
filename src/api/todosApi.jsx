@@ -33,5 +33,7 @@ export const updateTodo = async (todo) => {
 
 export const deleteTodo = async ({ id }) => {
   await delay()
-  return await todosApi.delete(`${todosUrlEndpoint}/${id}`, id)
+  if (Math.random() < 0.5) throw new Error('Failed to delete new item!')
+  const response = await todosApi.delete(`${todosUrlEndpoint}/${id}`, id)
+  return response.data
 }

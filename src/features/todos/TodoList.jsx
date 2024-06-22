@@ -8,14 +8,16 @@ import {
   todosUrlEndpoint as cacheKey,
   // addTodo,
   // updateTodo,
-  deleteTodo
+  // deleteTodo
 } from '../../api/todosApi'
 
 import {
   addMutation as addTodo,
   addTodoOptions,
   updateMutation as updateTodo,
-  updateTodoOptions
+  updateTodoOptions,
+  deleteMutation as deleteTodo,
+  deleteTodoOptions
 } from '../../helpers/todosMutations'
 import useSWR from 'swr'
 
@@ -51,8 +53,6 @@ const TodoList = () => {
 
   const updateTodoMutation = async (updatedTodo) => {
     try {
-      // await updateTodo(updatedTodo)
-      // mutate()
       await mutate(
         updateTodo(updatedTodo, todos),
         updateTodoOptions(updatedTodo, todos)
@@ -71,8 +71,10 @@ const TodoList = () => {
 
   const deleteTodoMutation = async ({ id }) => {
     try {
-      await deleteTodo({ id })
-      mutate()
+      await mutate(
+        deleteTodo({ id }, todos),
+        deleteTodoOptions({ id }, todos)
+      )
 
       toast.success('Success! Deleted item.', {
         duration: 1000
