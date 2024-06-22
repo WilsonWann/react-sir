@@ -13,3 +13,32 @@ export const addTodoOptions = (newTodo, todos) => {
     revalidate: false
   }
 }
+
+export const updateMutation = async (updatedTodo, todos) => {
+  const updated = await updateTodo(updatedTodo)
+
+  return todos
+    .map((todo) => {
+      if (todo.userId === updated.userId) {
+        return updated
+      }
+      return todo
+    })
+    .sort((a, b) => b.userId - a.userId)
+}
+
+export const updateTodoOptions = (updatedTodo, todos) => {
+  return {
+    optimisticData: todos
+      .map((todo) => {
+        if (todo.userId === updatedTodo.userId) {
+          return updatedTodo
+        }
+        return todo
+      })
+      .sort((a, b) => b.userId - a.userId),
+    rollbackOnError: true,
+    populateCache: true,
+    revalidate: false
+  }
+}

@@ -7,13 +7,15 @@ import {
   getTodos,
   todosUrlEndpoint as cacheKey,
   // addTodo,
-  updateTodo,
+  // updateTodo,
   deleteTodo
 } from '../../api/todosApi'
 
 import {
   addMutation as addTodo,
-  addTodoOptions
+  addTodoOptions,
+  updateMutation as updateTodo,
+  updateTodoOptions
 } from '../../helpers/todosMutations'
 import useSWR from 'swr'
 
@@ -49,8 +51,12 @@ const TodoList = () => {
 
   const updateTodoMutation = async (updatedTodo) => {
     try {
-      await updateTodo(updatedTodo)
-      mutate()
+      // await updateTodo(updatedTodo)
+      // mutate()
+      await mutate(
+        updateTodo(updatedTodo, todos),
+        updateTodoOptions(updatedTodo, todos)
+      )
 
       toast.success('Success! Updated item.', {
         duration: 1000,

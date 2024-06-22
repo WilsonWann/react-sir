@@ -26,6 +26,7 @@ export const addTodo = async ({ userId, title, completed }) => {
 
 export const updateTodo = async (todo) => {
   await delay()
+  if (Math.random() < 0.5) throw new Error('Failed to update new item!')
   const response = await todosApi.patch(`${todosUrlEndpoint}/${todo.id}`, todo)
   return response.data
 }
