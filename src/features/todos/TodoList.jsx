@@ -6,11 +6,15 @@ import { useState } from 'react'
 import {
   getTodos,
   todosUrlEndpoint as cacheKey,
-  addTodo,
+  // addTodo,
   updateTodo,
   deleteTodo
 } from '../../api/todosApi'
 
+import {
+  addMutation as addTodo,
+  addTodoOptions
+} from '../../helpers/todosMutations'
 import useSWR from 'swr'
 
 const TodoList = () => {
@@ -24,14 +28,13 @@ const TodoList = () => {
   } = useSWR(cacheKey, getTodos, {
     onSuccess: (data) => data.sort((a, b) => b.userId - a.userId)
   })
-  console.log("🚀 ----------------------------🚀")
-  console.log("🚀 ~ TodoList ~ todos:", todos)
-  console.log("🚀 ----------------------------🚀")
 
   const addTodoMutation = async (newTodo) => {
     try {
-      await addTodo(newTodo)
-      mutate()
+      await mutate(
+        addTodo(newTodo, todos),
+        addTodoOptions(newTodo, todos)
+      )
 
       toast.success('Success! Added new item.', {
         duration: 1000,
