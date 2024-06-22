@@ -77,7 +77,10 @@ const TodoList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addTodoMutation({ userId: 9999, title: newTodo, completed: false, id: 9999 })
+    addTodoMutation({
+      userId: Math.max(...todos.reduce((acc, curr) => [...acc, curr.userId], [])) + 1,
+      title: newTodo, completed: false, id: 9999
+    })
     setNewTodo('')
   }
 
